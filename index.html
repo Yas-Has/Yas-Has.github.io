@@ -4,15 +4,28 @@
 	<head>
 		<title>My website</title>
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<script type="text/javascript" src="script.js"></script>
+		<div id="container">
+			<video id="player" controls></video>
+		</div>
+		
+		<script>
+			var player = document.getElementById('player');
+
+		  var handleSuccess = function(stream) {
+		    player.srcObject = stream;
+		  };
+
+		  navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+		      .then(handleSuccess)
+		</script>
 		<style>
 			#container {
-				margin: 0px auto;
+				margin: 100px ;
 				width: 500px;
 				height: 375px;
 				border: 10px #333 solid;
 			}
-			#videoElement {
+			#player {
 				width: 500px;
 				height: 375px;
 				background-color: #666;
@@ -34,11 +47,7 @@
 			<li><p>asdfa</p></li>
 		</ol>
 		<button type="button" onclick="changeHeaderSize()">not a button</button> -->
-		<div id="container">
-			<video autoplay="true" id="videoElement">
-				
-			</video>
-		</div>
+		
 	</body>
 
 </html>

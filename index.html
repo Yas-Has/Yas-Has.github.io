@@ -2,50 +2,44 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<h1 id="mainh1"><center>Webcam and Microphone works!	</center></h1>
-		<div id="container">
-			<video id="player" controls></video>
-		</div>
+		<script type="text/javascript" src="script.js"></script>
 		
-		<script>
-			var player = document.getElementById('player');
-
-		  var handleSuccess = function(stream) {
-		    player.srcObject = stream;
-		  };
-
-		  navigator.mediaDevices.getUserMedia({ audio: true, video: true })
-		      .then(handleSuccess)
-		</script>
+		
+		
 		<style>
-			#container {
-				margin: 0px auto;
-				width: 500px;
-				height: 375px;
-				border: 10px #333 solid;
-			}
-			#player {
-				width: 500px;
-				height: 375px;
-				background-color: #666;
-			}
+			
 		</style>
 	</head>
-	<body>
-		
-		<!-- <h1>More Stuff</h1>
-		<p>asdfk</p>
-		<p>adfasd <a href="http://google.com" target="_blank">google</a></p>
-		<img src="img/download.jfif">
-		<ul>
-			<li>opjfgd</li>
-			<li><p>adsfia</p></li>
-		</ul>
-		<ol>
-			<li>adsfa</li>
-			<li><p>asdfa</p></li>
-		</ol>
-		<button type="button" onclick="changeHeaderSize()">not a button</button> -->
+	<body onload="main()">
+		<h1 id="mainh1"><center>Webcam and Microphone works!	</center></h1>
+		<div id="container">
+			<video id="player" autoplay width="750" height="500">	</video>
+		</div>
+		<canvas id="canvas" width="750" height="500"></canvas>
+		<script>
+			// var player = document.getElementById('player');
+			// var canvas = document.getElementById('canvas');
+			// var ctx = canvas.getContext('2d');
+
+		 //  var handleSuccess = function(stream) {
+		 //    player.srcObject = stream;
+		 //  };
+
+		 //  navigator.mediaDevices.getUserMedia({ audio: false, video: true })
+		 //      .then(handleSuccess)
+
+		 //    function drawFrame(video) {
+			//   ctx.drawImage(video, 0, 0);
+			  
+			//   setTimeout(function () {
+			//     drawFrame(video);
+			//   }, 10);
+			// }
+
+			// drawFrame(player);
+		</script>
+
+
 		
 	</body>
 

@@ -1,24 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Train+One&display=swap');
-
-/*h1 {
-	color: rgb(0,0,255);
-	font-family: "Train One";
-}*/
-
-#mainh1 {
-	color: rgb(0,0,255);
-	font-family: "Train One";
+.container {
+  display: flex;
+  width: 400px;
+  
+  .column {
+    max-width: 100%;
+    flex: 0 0 400px;
+  }
+  
+  video, canvas {
+    max-width: 100%;
+    background: #ccc;
+  }
 }
 
-p {
-	font-family: "Open Sans";
-	font-size: 20pt;
-}
-
-p:hover{
-	color: blue;
-}
-
-body {
-	background-color: gray;
+.video-container {
+  width: 400px;
 }

@@ -23,11 +23,13 @@ function main(){
       this.g = g;
       this.b = b;
       this.distVals = [];
+      this.distVals1 = [];
 
     }
 
-
-  
+    absoluteDistance(other){
+      return Math.abs(this.r - other.r) + Math.abs(this.g - other.g) + Math.abs(this.b - other.b)
+    }
 
 
     distance(other){
@@ -67,6 +69,7 @@ function main(){
 
     //console.log(imageData.data);
     const numColors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    const numColors1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 
     for(let i = 0; i < 1499999; i += 4){
@@ -78,43 +81,58 @@ function main(){
       for(let j = 0; j < colorValues.length; j++){
 
         let value = currentPixel.distance(colorValues[j])
-        //console.log(value);
-        // if(value < currentPixel.distVals[lowestIndex]){
-        //   lowestIndex = j;
-        // }
         currentPixel.distVals.push(value);
         value = 0;
+
+        let value1 = currentPixel.absoluteDistance(colorValues[j])
+        currentPixel.distVals1.push(value);
+        value1 = 0;
       }
       let lowestIndex = 15;
+      let lowestIndex1 = 15;
+      console.log(currentPixel.distVals1)
 
       for(let j = 0; j < colorValues.length; j++){
         if(currentPixel.distVals[j] < currentPixel.distVals[lowestIndex]){
           lowestIndex = j;
         }
 
+        if(currentPixel.distVals1[j] < currentPixel.distVals1[lowestIndex1]){
+          console.log("resetting distVals1")
+          lowestIndex1 = j;
+        }
+
         
       }
-      //console.log(currentPixel.distVals)
-      //console.log(lowestIndex);
-      //console.log(currentPixel.distVals);
-      //currentPixel.color(colorNames[lowestIndex]);
       numColors[lowestIndex] = numColors[lowestIndex] + 1;
+      numColors1[lowestIndex1] = numColors1[lowestIndex1] + 1;
     }
 
+    // console.log("numColors: " + numColors)
+    // console.log("numColors1: " + numColors1)
+
     let largestIndex = 0;
+    let largestIndex1 = 0;
+
     for(let i = 0; i < numColors.length; i++){
       if(numColors[i] > numColors[largestIndex]){
         largestIndex = i;
       }
+      if(numColors1[i] > numColors1[largestIndex1]){
+        largestIndex1 = i;
+      }
     }
 
     let mostColor = colorNames[largestIndex];
+    let mostColor1 = colorNames[largestIndex1];
+
     document.getElementById("colorName").innerHTML = mostColor;
+    document.getElementById("colorName1").innerHTML = mostColor1;
     //console.log(numColors)
 
     setTimeout(function () {
       drawFrame(video);
-    }, 10);
+    }, 5000);
   }
 
   drawFrame(player);

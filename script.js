@@ -18,7 +18,7 @@ function main(){
   //color class
   class Color{
 
-    constructor(r, g, b, a){
+    constructor(r, g, b){
       this.r = r;
       this.g = g;
       this.b = b;
@@ -70,7 +70,7 @@ function main(){
 
 
     for(let i = 0; i < 1499999; i += 4){
-      let currentPixel = new Color(i, i+1, i+2);
+      let currentPixel = new Color(imageData.data[i], imageData.data[i+1], imageData.data[i+2]);
 
       //console.log(i);
       
@@ -96,12 +96,20 @@ function main(){
       }
       //console.log(currentPixel.distVals)
       //console.log(lowestIndex);
-      console.log(currentPixel.distVals);
+      //console.log(currentPixel.distVals);
       //currentPixel.color(colorNames[lowestIndex]);
       numColors[lowestIndex] = numColors[lowestIndex] + 1;
     }
 
+    let largestIndex = 0;
+    for(let i = 0; i < numColors.length; i++){
+      if(numColors[i] > numColors[largestIndex]){
+        largestIndex = i;
+      }
+    }
 
+    let mostColor = colorNames[largestIndex];
+    document.getElementById("colorName").innerHTML = mostColor;
     //console.log(numColors)
 
     setTimeout(function () {

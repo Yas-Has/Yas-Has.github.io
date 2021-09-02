@@ -2,7 +2,6 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="style.css">
-		<script type="text/javascript" src="script.js"></script>
 		
 		
 		
@@ -11,96 +10,15 @@
 		</style>
 	</head>
 	<body onload="main()">
-		<h1 id="mainh1"><center>Webcam and Microphone works!	</center></h1>
+		<h1 id="mainh1"><center>Applying Filters</center></h1>
 		<div id="container">
 			<video id="player" autoplay width="750" height="500">	</video>
 		</div>
 		<canvas id="canvas" width="750" height="500"></canvas>
-		<h1>Using Euclidean distance</h1>
-		<h2 id="colorName"></h2>
-		<h1>Using Manhattan distance</h1>
-		<h2 id="colorName1"></h2>
-		<script>
-			// var player = document.getElementById('player');
-			// var canvas = document.getElementById('canvas');
-			// var ctx = canvas.getContext('2d');
-			// var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-			//console.log(imageData.data)
+		<canvas id="appliedFilters" width="auto" height="auto"></canvas>
+		<script type="text/javascript" src="script.js"></script>
+		
 
-			// var handleSuccess = function(stream) {
-				
-			// };
-
-			// navigator.mediaDevices.getUserMedia({ audio: false, video: true })
-			//   .then(handleSuccess)
-
-			// function drawFrame(video) {
-			// 	ctx.drawImage(video, 0, 0);
-
-			// 	setTimeout(function () {
-			// 	drawFrame(video);
-			// 	}, 10);
-			// }
-
-			// drawFrame(player);
-
-			// class Color{
-
-			// 	constructor(r, g, b, a){
-			// 		this.r = r;
-			// 		this.g = g;
-			// 		this.b = b;
-			// 		this.distVals = [];
-			// 		this.color = "";
-
-			// 	}
-
-			// 	absoluteDist(other){
-			// 		return Math.abs(this.r - other.r) + Math.abs(this.g - other.g) + Math.abs(this.b - other.b)
-			// 	}
-
-			// }
-			// const white = new Color(255, 255, 255);
-			// const silver = new Color(192, 192, 192);
-			// const gray = new Color(128, 128, 128);
-			// const black = new Color(0, 0, 0);
-			// const red = new Color(255, 0, 0);
-			// const maroon = new Color(128, 0, 0);
-			// const yellow = new Color(255, 255, 0);
-			// const olive = new Color(128, 128, 0);
-			// const lime = new Color(0, 255, 0);
-			// const green = new Color(0, 128, 0);
-			// const aqua = new Color(0, 255, 255);
-			// const teal = new Color(0, 128, 128);
-			// const blue = new Color(0, 0, 255);
-			// const navy = new Color(0, 0, 128);
-			// const fuchsia = new Color(255, 0, 255);
-			// const purple = new Color(128, 0, 128);
-
-			// const colorValues = [white, silver, gray, black, red, maroon,yellow, olive, lime, green, aqua, teal, blue, navy, fuchsia, purple];
-
-			// const colorNames = ["White", "Silver", "Gray", "Black", "Red", "Maroon", "Yellow", "Olive", "Lime", "Green", "Aqua", "Teal", "Blue", "Navy", "Fuchsia", "Purple"];
-			// const numColors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-
-			// for(let i = 0; i < imageData.data; i += 4){
-			// 	let currentPixel = new Color(i, i+1, i+2);
-			// 	let lowestIndex = 0;
-			// 	for(let j = 0; j < colorValues.length(); j++){
-
-			// 		let value = currentPixel.absoluteDist(colorValues[j])
-			// 		if(value < colorValues[lowestIndex]){
-			// 			lowestIndex = j;
-			// 		}
-			// 		currentPixel.distVals.push(value);
-			// 	}
-			// 	currentPixel.color = colorNames[lowestIndex];
-			// 	numColors[lowestIndex] = numColors[lowestIndex] + 1;
-			// }
-
-			// console.log(numColors)
-
-		</script>
 
 
 		

@@ -4,6 +4,9 @@ function main(){
   var player = document.getElementById('player');
   var canvas = document.getElementById('canvas');
   var ctx = canvas.getContext('2d');
+
+  var appliedFilters = document.getElementById('appliedFilters');
+  var ctxAppliedFilters = appliedFilters.getContext('2d');
   
 
 
@@ -11,6 +14,15 @@ function main(){
   var handleSuccess = function(stream) {
     player.srcObject = stream;
   };
+
+  player.addEventListener('playing', function() {
+    console.log(player.videoWidth);
+    console.log(player.videoHeight);
+
+    canvas.width = player.videoWidth;
+    canvas.height = player.videoHeight;
+
+  }, false);
 
   navigator.mediaDevices.getUserMedia({ audio: false, video: true })
       .then(handleSuccess)
@@ -37,7 +49,7 @@ function main(){
     }
 
   }
-
+/*
   //base colors
   const white = new Color(255, 255, 255);
   const silver = new Color(192, 192, 192);
@@ -61,52 +73,81 @@ function main(){
   //used to get actual color names
   const colorNames = ["White", "Silver", "Gray", "Black", "Red", "Maroon", "Yellow", "Olive", "Lime", "Green", "Aqua", "Teal", "Blue", "Navy", "Fuchsia", "Purple"];
   
+*/
 
+  const kernel = [[1, 1, 1], [1, 1, 1], [1, 1, 1,]]
+  const factor = 1/9
 
   function drawFrame(video) {
     ctx.drawImage(video, 0, 0);
     var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-    //console.log(imageData.data);
-    const numColors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    const numColors1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    //console.log(imageData.data)
+    var imageDataFiltered = ctxAppliedFilters.createImageData(appliedFilters.width, appliedFilters.height);
 
 
-    for(let i = 0; i < 1499999; i += 4){
-      let currentPixel = new Color(imageData.data[i], imageData.data[i+1], imageData.data[i+2]);
 
-      //console.log(i);
-      
-      //console.log(currentPixel.r)
-      for(let j = 0; j < colorValues.length; j++){
-
-        let value = currentPixel.distance(colorValues[j])
-        currentPixel.distVals.push(value);
-        value = 0;
-
-        let value1 = currentPixel.absoluteDistance(colorValues[j])
-        currentPixel.distVals1.push(value);
-        value1 = 0;
-      }
-      let lowestIndex = 15;
-      let lowestIndex1 = 15;
-      console.log(currentPixel.distVals1)
-
-      for(let j = 0; j < colorValues.length; j++){
-        if(currentPixel.distVals[j] < currentPixel.distVals[lowestIndex]){
-          lowestIndex = j;
-        }
-
-        if(currentPixel.distVals1[j] < currentPixel.distVals1[lowestIndex1]){
-          console.log("resetting distVals1")
-          lowestIndex1 = j;
-        }
-
-        
-      }
-      numColors[lowestIndex] = numColors[lowestIndex] + 1;
-      numColors1[lowestIndex1] = numColors1[lowestIndex1] + 1;
+    let pixelArray = new Array(480);
+    for(let i = 0; i < pixelArray.length; i++){
+      pixelArray[i] = new Array(640)
     }
+
+
+    for(let i = 0; i < pixelArray.length; i++){
+      for(let j = 0; j < pixelArray[i].length; j++){
+        pixelArray[i][j] = new Color(imageData.data[i*640*4 + j*4], imageData.data[i*640*4 + j*4 + 1], imageData.data[i*640*4 + j*4 + 2])
+      }
+    }
+
+
+    for(let x = 0; x < pixelArray[0].length; x++){
+      for(let y = 0; y < pixelArray.length; y++){
+        let red = 0;
+        let green = 0;
+        let blue = 0;
+        for(let ky = 0; ky < kernel.length; ky++){
+          for(let kx = 0; ky < kernel[0].length; kx++){
+            let imageX = (x - kernel[0].length/ 2 + kx + 640) % 640;
+            let imageY = (y - kernel.length / 2 + ky + 480) % 480;
+            red += imageData.data[imageY*pixelArray[0].length*4 + imageX*4] * kernel[ky][kx];
+            green += imageData.data[imageY*pixelArray[0].length*4 + imageX*4 + 1] * kernel[ky][kx];
+            blue += imageData.data[imageY*pixelArray[0].length*4 + imageX*4 + 2] * kernel[ky][kx];
+          }
+        }
+        if(red > 255){
+          red = 255;
+        }
+        if(red < 0){
+          red = 0;
+        }
+        if(green > 255){
+          green = 255;
+        }
+        if(green < 0){
+          green = 0;
+        } 
+        if(blue > 255){
+          blue = 255;
+        }
+        if(blue < 0){
+          blue = 0;
+        } 
+        imageDataFiltered[y * 640 * 4 + x * 4] = (red*factor).toFixed(0) 
+        imageDataFiltered[y * 640 * 4 + x * 4 + 1] = (green*factor).toFixed(0)
+        imageDataFiltered[y * 640 * 4 + x * 4 + 2] = (blue*factor).toFixed(0)
+        imageDataFiltered[y * 640 * 4 + x * 4 + 3] = 255
+      }
+    }
+
+    ctxAppliedFilters.putImageData(imageDataFiltered,0,0);
+
+
+    //console.log(imageData.data)
+    //console.log(pixelArray)
+
+
+
+
+    /*
 
     // console.log("numColors: " + numColors)
     // console.log("numColors1: " + numColors1)
@@ -129,10 +170,11 @@ function main(){
     document.getElementById("colorName").innerHTML = mostColor;
     document.getElementById("colorName1").innerHTML = mostColor1;
     //console.log(numColors)
+    */
 
     setTimeout(function () {
       drawFrame(video);
-    }, 5000);
+    }, 10);
   }
 
   drawFrame(player);

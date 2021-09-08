@@ -22,33 +22,59 @@ function main(){
     canvas.width = player.videoWidth;
     canvas.height = player.videoHeight;
 
+    appliedFilters.width = canvas.width - 2;
+    appliedFilters.height = canvas.height - 2;
+
   }, false);
 
   navigator.mediaDevices.getUserMedia({ audio: false, video: true })
       .then(handleSuccess)
 
   //color class
-  class Color{
+  // class Color{
 
-    constructor(r, g, b){
-      this.r = r;
-      this.g = g;
-      this.b = b;
-      this.distVals = [];
-      this.distVals1 = [];
+  //   constructor(r, g, b){
+  //     this.r = r;
+  //     this.g = g;
+  //     this.b = b;
 
-    }
+  //   }
 
-    absoluteDistance(other){
-      return Math.abs(this.r - other.r) + Math.abs(this.g - other.g) + Math.abs(this.b - other.b)
-    }
+  //   // get r() {
+  //   //   return this.r;
+  //   // }
+
+  //   // get g() {
+  //   //   return this.g;
+  //   // }
+
+  //   // get b() {
+  //   //   return this.b;
+  //   // }
+
+  //   // set r(newR) {
+  //   //   this.r = newR;
+  //   // }
+
+  //   // set g(newG) {
+  //   //   this.g = newG;
+  //   // }
+
+  //   // set b(newB) {
+  //   //   this.b = newB;
+  //   // }
 
 
-    distance(other){
-      return Math.pow(Math.pow(this.r - other.r, 2) + Math.pow(this.g - other.g, 2) + Math.pow(this.b - other.b, 2),1/2)
-    }
+  //   absoluteDistance(other){
+  //     return Math.abs(this.r - other.r) + Math.abs(this.g - other.g) + Math.abs(this.b - other.b)
+  //   }
 
-  }
+
+  //   distance(other){
+  //     return Math.pow(Math.pow(this.r - other.r, 2) + Math.pow(this.g - other.g, 2) + Math.pow(this.b - other.b, 2),1/2)
+  //   }
+
+  // }
 /*
   //base colors
   const white = new Color(255, 255, 255);
@@ -75,8 +101,8 @@ function main(){
   
 */
 
-  const kernel = [[1, 1, 1], [1, 1, 1], [1, 1, 1,]]
-  const factor = 1/9
+  const kernel = [[0, 0, 0], [0, 1, 0], [0, 0, 0,]]
+  const factor = 1
 
   function drawFrame(video) {
     ctx.drawImage(video, 0, 0);
@@ -86,57 +112,42 @@ function main(){
 
 
 
-    let pixelArray = new Array(480);
-    for(let i = 0; i < pixelArray.length; i++){
-      pixelArray[i] = new Array(640)
-    }
+    // let pixelArray = new Array(480);
+    // for(let i = 0; i < pixelArray.length; i++){
+    //   pixelArray[i] = new Array(640)
+    // }
 
 
-    for(let i = 0; i < pixelArray.length; i++){
-      for(let j = 0; j < pixelArray[i].length; j++){
-        pixelArray[i][j] = new Color(imageData.data[i*640*4 + j*4], imageData.data[i*640*4 + j*4 + 1], imageData.data[i*640*4 + j*4 + 2])
-      }
-    }
+    // for(let i = 0; i < pixelArray.length; i++){
+    //   for(let j = 0; j < pixelArray[i].length; j++){
+    //     pixelArray[i][j] = new Color(imageData.data[i*640*4 + j*4], imageData.data[i*640*4 + j*4 + 1], imageData.data[i*640*4 + j*4 + 2])
+    //   }
+    // }
 
-
-    for(let x = 0; x < pixelArray[0].length; x++){
-      for(let y = 0; y < pixelArray.length; y++){
+    for (let y = 1; y < player.videoHeight - 1; y++){
+      for(let x = 1; x < player.videoWidth - 1; x++){
         let red = 0;
         let green = 0;
         let blue = 0;
         for(let ky = 0; ky < kernel.length; ky++){
           for(let kx = 0; ky < kernel[0].length; kx++){
-            let imageX = (x - kernel[0].length/ 2 + kx + 640) % 640;
-            let imageY = (y - kernel.length / 2 + ky + 480) % 480;
-            red += imageData.data[imageY*pixelArray[0].length*4 + imageX*4] * kernel[ky][kx];
-            green += imageData.data[imageY*pixelArray[0].length*4 + imageX*4 + 1] * kernel[ky][kx];
-            blue += imageData.data[imageY*pixelArray[0].length*4 + imageX*4 + 2] * kernel[ky][kx];
+            let imageX = x + (kx - 1);
+            let imageY = y + (ky - 1);
+            red += imageData.data[imageY*player.videoHeight*4 + imageX*4] * kernel[ky][kx];
+            green += imageData.data[imageY*player.videoHeight*4 + imageX*4 + 1] * kernel[ky][kx];
+            blue += imageData.data[imageY*player.videoHeight*4 + imageX*4 + 2] * kernel[ky][kx];
           }
         }
-        if(red > 255){
-          red = 255;
-        }
-        if(red < 0){
-          red = 0;
-        }
-        if(green > 255){
-          green = 255;
-        }
-        if(green < 0){
-          green = 0;
-        } 
-        if(blue > 255){
-          blue = 255;
-        }
-        if(blue < 0){
-          blue = 0;
-        } 
-        imageDataFiltered[y * 640 * 4 + x * 4] = (red*factor).toFixed(0) 
-        imageDataFiltered[y * 640 * 4 + x * 4 + 1] = (green*factor).toFixed(0)
-        imageDataFiltered[y * 640 * 4 + x * 4 + 2] = (blue*factor).toFixed(0)
-        imageDataFiltered[y * 640 * 4 + x * 4 + 3] = 255
+        imageDataFiltered[(y - 1) * player.videoHeight * 4 + (x - 1) * 4] = (red*factor)
+        imageDataFiltered[(y - 1) * player.videoHeight * 4 + (x - 1) * 4 + 1] = (green*factor)
+        imageDataFiltered[(y - 1) * player.videoHeight * 4 + (x - 1) * 4 + 2] = (blue*factor)
+        imageDataFiltered[(y - 1) * player.videoHeight * 4 + (x - 1) * 4 + 3] = 255
       }
     }
+
+   
+    
+
 
     ctxAppliedFilters.putImageData(imageDataFiltered,0,0);
 
@@ -174,7 +185,7 @@ function main(){
 
     setTimeout(function () {
       drawFrame(video);
-    }, 10);
+    }, 10000);
   }
 
   drawFrame(player);
